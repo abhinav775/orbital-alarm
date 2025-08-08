@@ -11,6 +11,15 @@ let alarmHour = null;
 let alarmMin = null;
 let alarmSet = false;
 
+let animationAngle = 270;
+let rotating = false;
+let animationFrameId = null;
+
+// Ensure Earth dimensions are available
+window.onload = () => {
+  setEarthPosition(animationAngle); // Correct starting position
+};
+
 function setEarthPosition(angle) {
   const rad = angle * Math.PI / 180;
   const x = centerX + radius * Math.cos(rad) - earth.offsetWidth / 2;
@@ -40,12 +49,13 @@ let selectedHour = null;
 let selectedMin = null;
 
 orbit.addEventListener("mousedown", (e) => {
+  if (rotating) return;
   dragging = true;
   moveEarth(e);
 });
 
 document.addEventListener("mousemove", (e) => {
-  if (dragging) moveEarth(e);
+  if (dragging && !rotating) moveEarth(e);
 });
 
 document.addEventListener("mouseup", () => dragging = false);
@@ -53,23 +63,32 @@ document.addEventListener("mouseup", () => dragging = false);
 function moveEarth(e) {
   const angle = getAngleFromMouse(e.clientX, e.clientY);
   setEarthPosition(angle);
+  animationAngle = angle;
   const { h, m } = angleToTime(angle);
   selectedHour = h;
   selectedMin = m;
   timeDisplay.textContent = `Alarm Time: ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 }
 
-// Set Alarm Button
 setAlarmBtn.addEventListener("click", () => {
   if (selectedHour !== null && selectedMin !== null) {
     alarmHour = selectedHour;
     alarmMin = selectedMin;
     alarmSet = true;
+    rotating = true;
     alert(`✅ Alarm set for ${String(alarmHour).padStart(2, '0')}:${String(alarmMin).padStart(2, '0')}`);
+    animateEarth();
   }
 });
 
-// Check time every second
+function animateEarth() {
+  if (!rotating) return;
+  animationAngle = (animationAngle + 0.2) % 360;
+  setEarthPosition(animationAngle);
+  animationFrameId = requestAnimationFrame(animateEarth);
+}
+
+// ⏰ Alarm check + math until wrong
 setInterval(() => {
   if (!alarmSet) return;
 
@@ -80,10 +99,37 @@ setInterval(() => {
     now.getSeconds() === 0
   ) {
     alarmSet = false;
+    rotating = false;
+    cancelAnimationFrame(animationFrameId);
     alarmSound.play();
-    alert("🌞 Alarm Time Reached!");
+    askMathUntilWrong();
   }
 }, 1000);
 
-// Default starting position
-setEarthPosition(270);
+function askMathUntilWrong() {
+  function generateQuestion() {
+    const a = Math.floor(Math.random() * 10) + 1;
+    const b = Math.floor(Math.random() * 10) + 1;
+    const op = Math.random() < 0.5 ? '+' : '-';
+    const correct = op === '+' ? a + b : a - b;
+    return { question: `${a} ${op} ${b}`, answer: correct };
+  }
+
+  function loopQuestion() {
+    const { question, answer } = generateQuestion();
+    const userInput = prompt(`🧠 Solve to stop alarm:\n${question}`);
+
+    if (userInput === null) {
+      loopQuestion(); // Retry if user cancels
+    } else if (parseInt(userInput) !== answer) {
+      alarmSound.pause();
+      alarmSound.currentTime = 0;
+      alert("🚨 Wrong answer. Alarm stopped.");
+    } else {
+      alert("✅ Correct! Try again.");
+      loopQuestion();
+    }
+  }
+
+  loopQuestion();
+}
