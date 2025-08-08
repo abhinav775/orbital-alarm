@@ -1,31 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Earth Alarm Clock</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <title>Solar Alarm</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🌍 Earth Orbit Alarm Clock ☀️</h1>
-  <div id="solar-system">
+
+  <h1>🌍 Set Alarm by Dragging Earth 🌞</h1>
+  <div id="orbit">
     <div id="sun"></div>
-    <div id="earth-orbit">
-      <div id="earth"></div>
-    </div>
+    <div id="earth"></div>
   </div>
 
-  <p>Selected Time: <span id="selected-time">--:--</span></p>
-  <button id="set-alarm">Set Alarm</button>
+  <div id="time">Alarm Time: --:--</div>
+  <button id="setAlarmBtn">Set Alarm</button>
 
-  <audio id="alarm-audio" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" loop></audio>
-
-  <div id="alarm-modal" class="hidden">
-    <p>Solve this to stop alarm:</p>
-    <p id="math-question"></p>
-    <input type="text" id="answer" placeholder="Your answer">
-    <button id="submit-answer">Submit</button>
-  </div>
+  <audio id="alarm" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
 
   <script src="script.js"></script>
 </body>
