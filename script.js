@@ -107,6 +107,55 @@ setInterval(() => {
 }, 1000);
 
 function askMathUntilWrong() {
+  // Create overlay elements dynamically
+  const overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = 0;
+  overlay.style.left = 0;
+  overlay.style.width = '100vw';
+  overlay.style.height = '100vh';
+  overlay.style.background = 'rgba(0, 0, 0, 0.85)';
+  overlay.style.display = 'flex';
+  overlay.style.flexDirection = 'column';
+  overlay.style.justifyContent = 'center';
+  overlay.style.alignItems = 'center';
+  overlay.style.zIndex = '9999';
+
+  const questionBox = document.createElement('div');
+  questionBox.style.background = '#111';
+  questionBox.style.color = 'white';
+  questionBox.style.padding = '20px';
+  questionBox.style.borderRadius = '10px';
+  questionBox.style.textAlign = 'center';
+
+  const questionText = document.createElement('div');
+  questionText.style.fontSize = '1.5em';
+  questionText.style.marginBottom = '10px';
+
+  const input = document.createElement('input');
+  input.type = 'number';
+  input.style.padding = '10px';
+  input.style.fontSize = '1.2em';
+  input.style.borderRadius = '5px';
+  input.style.border = 'none';
+  input.style.marginBottom = '10px';
+
+  const submitBtn = document.createElement('button');
+  submitBtn.textContent = 'Submit';
+  submitBtn.style.padding = '10px 20px';
+  submitBtn.style.fontSize = '1em';
+  submitBtn.style.borderRadius = '8px';
+  submitBtn.style.border = 'none';
+  submitBtn.style.background = '#0af';
+  submitBtn.style.color = 'white';
+  submitBtn.style.cursor = 'pointer';
+
+  questionBox.appendChild(questionText);
+  questionBox.appendChild(input);
+  questionBox.appendChild(submitBtn);
+  overlay.appendChild(questionBox);
+  document.body.appendChild(overlay);
+
   function generateQuestion() {
     const a = Math.floor(Math.random() * 10) + 1;
     const b = Math.floor(Math.random() * 10) + 1;
@@ -115,21 +164,23 @@ function askMathUntilWrong() {
     return { question: `${a} ${op} ${b}`, answer: correct };
   }
 
-  function loopQuestion() {
-    const { question, answer } = generateQuestion();
-    const userInput = prompt(`🧠 Solve to stop alarm:\n${question}`);
+  let { question, answer } = generateQuestion();
+  questionText.textContent = `🧠 Solve: ${question}`;
+  input.value = '';
 
-    if (userInput === null) {
-      loopQuestion(); // Retry if user cancels
-    } else if (parseInt(userInput) !== answer) {
+  submitBtn.onclick = () => {
+    const userInput = parseInt(input.value);
+    if (userInput !== answer) {
       alarmSound.pause();
       alarmSound.currentTime = 0;
+      document.body.removeChild(overlay);
       alert("🚨 Wrong answer. Alarm stopped.");
     } else {
+      // Refresh question
       alert("✅ Correct! Try again.");
-      loopQuestion();
+      ({ question, answer } = generateQuestion());
+      questionText.textContent = `🧠 Solve: ${question}`;
+      input.value = '';
     }
-  }
-
-  loopQuestion();
+  };
 }
