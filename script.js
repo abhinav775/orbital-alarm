@@ -1,86 +1,54 @@
-const orbit = document.getElementById("orbit");
-const earth = document.getElementById("earth");
-const timeDisplay = document.getElementById("time");
-const alarmSound = document.getElementById("alarm");
+const orbit = document.querySelector(".orbit");
+const alarmSound = document.getElementById("alarmSound");
 const setAlarmBtn = document.getElementById("setAlarmBtn");
 
-const radius = 200;
-const centerX = radius;
-const centerY = radius;
-let alarmHour = null;
-let alarmMin = null;
-let alarmSet = false;
+let alarmAngle = null;
+let isAlarmSet = false;
 
-function setEarthPosition(angle) {
-  const rad = angle * Math.PI / 180;
-  const x = centerX + radius * Math.cos(rad) - earth.offsetWidth / 2;
-  const y = centerY + radius * Math.sin(rad) - earth.offsetHeight / 2;
-  earth.style.left = `${x}px`;
-  earth.style.top = `${y}px`;
-}
+orbit.addEventListener("click", (e) => {
+  const rect = orbit.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+  alarmAngle = (angle * 180 / Math.PI + 360) % 360;
 
-function getAngleFromMouse(x, y) {
-  const dx = x - (orbit.getBoundingClientRect().left + centerX);
-  const dy = y - (orbit.getBoundingClientRect().top + centerY);
-  let angle = Math.atan2(dy, dx) * (180 / Math.PI);
-  if (angle < 0) angle += 360;
-  return angle;
-}
-
-function angleToTime(angle) {
-  const totalMinutes = Math.round((angle / 360) * 1440);
-  const h = Math.floor(totalMinutes / 60);
-  const m = totalMinutes % 60;
-  return { h, m };
-}
-
-// Drag Logic
-let dragging = false;
-
-orbit.addEventListener("mousedown", (e) => {
-  dragging = true;
-  moveEarth(e);
+  alert(`Alarm time set at angle: ${Math.round(alarmAngle)}°\nNow click "Set Alarm" to start`);
 });
 
-document.addEventListener("mousemove", (e) => {
-  if (dragging) moveEarth(e);
-});
-
-document.addEventListener("mouseup", () => dragging = false);
-
-function moveEarth(e) {
-  const angle = getAngleFromMouse(e.clientX, e.clientY);
-  setEarthPosition(angle);
-  const { h, m } = angleToTime(angle);
-  alarmHour = h;
-  alarmMin = m;
-  alarmSet = false; // reset until user confirms
-  timeDisplay.textContent = `Alarm Time: ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')} (Not Set Yet)`;
-}
-
-// Set Alarm Button
 setAlarmBtn.addEventListener("click", () => {
-  if (alarmHour !== null && alarmMin !== null) {
-    alarmSet = true;
-    timeDisplay.textContent = `Alarm SET for: ${String(alarmHour).padStart(2, '0')}:${String(alarmMin).padStart(2, '0')}`;
+  if (alarmAngle === null) {
+    alert("Click on orbit to set alarm time.");
+    return;
   }
+  isAlarmSet = true;
+  alert("Alarm is set! Earth must reach that position to ring.");
 });
 
-// Check time every second
+// Continuously check Earth's position
+let lastAngle = 0;
 setInterval(() => {
-  if (!alarmSet) return;
+  if (!isAlarmSet) return;
 
-  const now = new Date();
-  if (
-    alarmHour === now.getHours() &&
-    alarmMin === now.getMinutes() &&
-    now.getSeconds() === 0
-  ) {
-    alarmSound.play();
-    alert("🌞 Alarm Time Reached!");
-    alarmSet = false; // reset alarm after it rings
+  const computedStyle = window.getComputedStyle(orbit);
+  const transform = computedStyle.transform;
+
+  if (transform !== "none") {
+    const values = transform.split("(")[1].split(")")[0].split(",");
+    const a = values[0], b = values[1];
+    const angle = Math.atan2(b, a) * (180 / Math.PI);
+    const currentAngle = (angle + 360) % 360;
+
+    // When Earth reaches or passes the alarm angle
+    if (
+      alarmAngle !== null &&
+      Math.abs(currentAngle - alarmAngle) < 2 &&
+      Math.abs(currentAngle - lastAngle) > 1
+    ) {
+      alarmSound.play();
+      isAlarmSet = false;
+      alert("⏰ Alarm Ringing!");
+    }
+
+    lastAngle = currentAngle;
   }
-}, 1000);
-
-// Start with Earth at top (12:00 AM)
-setEarthPosition(270);
+}, 100);
