@@ -1,54 +1,89 @@
-const orbit = document.querySelector(".orbit");
-const alarmSound = document.getElementById("alarmSound");
-const setAlarmBtn = document.getElementById("setAlarmBtn");
+const earth = document.getElementById('earth');
+const selectedTimeDisplay = document.getElementById('selected-time');
+const setAlarmBtn = document.getElementById('set-alarm');
+const alarmAudio = document.getElementById('alarm-audio');
+const alarmModal = document.getElementById('alarm-modal');
+const mathQuestion = document.getElementById('math-question');
+const answerInput = document.getElementById('answer');
+const submitAnswer = document.getElementById('submit-answer');
 
-let alarmAngle = null;
-let isAlarmSet = false;
+let alarmTime = null;
+let isDragging = false;
+let center = { x: 150, y: 150 };
 
-orbit.addEventListener("click", (e) => {
-  const rect = orbit.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-  const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
-  alarmAngle = (angle * 180 / Math.PI + 360) % 360;
+// --- Drag to Set Time by Angle ---
+earth.addEventListener('mousedown', () => isDragging = true);
+document.addEventListener('mouseup', () => isDragging = false);
+document.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  let dx = e.clientX - (earth.offsetParent.offsetLeft + center.x);
+  let dy = e.clientY - (earth.offsetParent.offsetTop + center.y);
+  let angle = Math.atan2(dy, dx);
 
-  alert(`Alarm time set at angle: ${Math.round(alarmAngle)}°\nNow click "Set Alarm" to start`);
+  let radius = 150;
+  let x = center.x + radius * Math.cos(angle) - 15;
+  let y = center.y + radius * Math.sin(angle) - 15;
+
+  earth.style.left = `${x}px`;
+  earth.style.top = `${y}px`;
+
+  // Convert angle to time (0 to 24h)
+  let degrees = angle * (180 / Math.PI);
+  degrees = (degrees + 360 + 90) % 360; // Align 0 deg to top
+  let totalMinutes = Math.floor((degrees / 360) * 1440);
+  let hh = String(Math.floor(totalMinutes / 60)).padStart(2, '0');
+  let mm = String(totalMinutes % 60).padStart(2, '0');
+  selectedTimeDisplay.textContent = `${hh}:${mm}`;
+  alarmTime = `${hh}:${mm}`;
 });
 
-setAlarmBtn.addEventListener("click", () => {
-  if (alarmAngle === null) {
-    alert("Click on orbit to set alarm time.");
-    return;
-  }
-  isAlarmSet = true;
-  alert("Alarm is set! Earth must reach that position to ring.");
-});
-
-// Continuously check Earth's position
-let lastAngle = 0;
+// --- Alarm Checker ---
 setInterval(() => {
-  if (!isAlarmSet) return;
+  const now = new Date();
+  let hh = String(now.getHours()).padStart(2, '0');
+  let mm = String(now.getMinutes()).padStart(2, '0');
+  let currentTime = `${hh}:${mm}`;
 
-  const computedStyle = window.getComputedStyle(orbit);
-  const transform = computedStyle.transform;
-
-  if (transform !== "none") {
-    const values = transform.split("(")[1].split(")")[0].split(",");
-    const a = values[0], b = values[1];
-    const angle = Math.atan2(b, a) * (180 / Math.PI);
-    const currentAngle = (angle + 360) % 360;
-
-    // When Earth reaches or passes the alarm angle
-    if (
-      alarmAngle !== null &&
-      Math.abs(currentAngle - alarmAngle) < 2 &&
-      Math.abs(currentAngle - lastAngle) > 1
-    ) {
-      alarmSound.play();
-      isAlarmSet = false;
-      alert("⏰ Alarm Ringing!");
-    }
-
-    lastAngle = currentAngle;
+  if (alarmTime && currentTime === alarmTime) {
+    ringAlarm();
+    alarmTime = null; // prevent repeating
   }
-}, 100);
+}, 1000);
+
+// --- Set Alarm ---
+setAlarmBtn.addEventListener('click', () => {
+  if (alarmTime) {
+    alert(`Alarm set for ${alarmTime}`);
+  } else {
+    alert("Rotate Earth to set time!");
+  }
+});
+
+// --- Alarm Logic ---
+function ringAlarm() {
+  alarmAudio.play();
+  alarmModal.classList.remove('hidden');
+  generateMathQuestion();
+}
+
+function generateMathQuestion() {
+  const a = Math.floor(Math.random() * 10 + 1);
+  const b = Math.floor(Math.random() * 10 + 1);
+  mathQuestion.textContent = `${a} + ${b} = ?`;
+  answerInput.dataset.correct = a + b;
+}
+
+submitAnswer.addEventListener('click', () => {
+  const userAnswer = parseInt(answerInput.value);
+  const correct = parseInt(answerInput.dataset.correct);
+
+  // Here's the "useless twist" – alarm only stops on wrong answer
+  if (userAnswer !== correct) {
+    alarmAudio.pause();
+    alarmAudio.currentTime = 0;
+    alarmModal.classList.add('hidden');
+    alert("Wrong! Alarm turned off! 😂");
+  } else {
+    alert("Correct? Nice try. Alarm keeps ringing!");
+  }
+});
