@@ -1,0 +1,8 @@
+body {
+  background: radial-gradient(ellipse at center, #000 0%, #001f3f 100%);
+  margin: 0;
+  overflow: hidden;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
