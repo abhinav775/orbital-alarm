@@ -5,7 +5,7 @@
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: ABHINAVGOPAL
 
 
 ### Team Members
@@ -29,25 +29,27 @@ For Software:
 
 For Hardware:It is software based project no hardwares are used
 ### Implementation
-For Software:
 # Installation
-[commands]
+For Software:git clone https://github.com/abhinav775/orbital-alarm
+cd orbital-alarm
 
 # Run
-[commands]
+open orbital alarm.html
 
 ### Project Documentation
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot1]<img width="1919" height="1079" alt="Screenshot 2025-08-09 002440" src="https://github.com/user-attachments/assets/2aa77c78-7d97-4606-9638-81ecdcf51857" />
+the alarm time is set a starts rotating
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot2] <img width="1913" height="1079" alt="Screenshot 2025-08-09 002518" src="https://github.com/user-attachments/assets/182fcf00-e3b0-40c3-842a-167aecca3061" />
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+when the time of alarm reached it started ringing and we can only turn off by solving a math question
+
+![Screenshot3]<img width="1919" height="1077" alt="Screenshot 2025-08-09 002534" src="https://github.com/user-attachments/assets/ebfac948-2ef5-4d6b-9387-b5fdc5ccaf8c" />
+but there is a twist in this when we give correct solution the alarm dont stop but when we give wrong answer alarm stops
+
 
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
@@ -74,16 +76,16 @@ For Hardware:
 
 ### Project Demo
 # Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
+[Add your demo video link
+
+https://github.com/user-attachments/assets/9dda1817-d47a-4a40-89d7-f71e70a903cb
+
+ here]
+the alarm  time is set by draging earth around sun and when time is reached alarm rings and it canbe stopped by give answer to math question but we should give wrong answer to it
 
 # Additional Demos
-[Add any extra demo materials/links]
 
-## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
