@@ -3,26 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Solar Alarm Clock</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Earth Alarm Clock</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div id="sky">
-    <div class="sun"></div>
-    <div class="earth-orbit">
-      <div class="earth"></div>
+  <h1>🌍 Earth Orbit Alarm Clock ☀️</h1>
+  <div id="solar-system">
+    <div id="sun"></div>
+    <div id="earth-orbit">
+      <div id="earth"></div>
     </div>
   </div>
 
-  <div id="ui">
-    <h1>Set Alarm by Rotating Earth</h1>
-    <p>Drag the Earth around the Sun to set time. Then click <strong>Set Alarm</strong>.</p>
-    <p>Alarm Time: <span id="alarm-time">Not Set</span></p>
-    <button id="set-alarm">Set Alarm</button>
+  <p>Selected Time: <span id="selected-time">--:--</span></p>
+  <button id="set-alarm">Set Alarm</button>
+
+  <audio id="alarm-audio" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" loop></audio>
+
+  <div id="alarm-modal" class="hidden">
+    <p>Solve this to stop alarm:</p>
+    <p id="math-question"></p>
+    <input type="text" id="answer" placeholder="Your answer">
+    <button id="submit-answer">Submit</button>
   </div>
 
-  <audio id="alarm-sound" src="alarm.mp3" preload="auto"></audio>
-  
   <script src="script.js"></script>
 </body>
 </html>
