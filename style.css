@@ -6,3 +6,42 @@ body {
   font-family: Arial, sans-serif;
   text-align: center;
 }
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+#sun {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+#earth {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+}
+#setAlarmBtn {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+#alarmTime {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+}
