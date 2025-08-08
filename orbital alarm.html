@@ -2,21 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solar Alarm</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <img src="sun.png" id="sun" />
-    <div id="orbit">
-      <img src="earth.png" id="earth" />
+    <div class="sun"></div>
+    <div class="orbit">
+      <div class="earth" id="earth" draggable="true"></div>
     </div>
+    <button id="setAlarm">Set Alarm</button>
+    <div id="status"></div>
   </div>
 
-  <button id="setAlarmBtn">Set Alarm</button>
-  <div id="alarmTime"></div>
-  <audio id="alarmSound" src="C:\Users\ABHINAVGOPAL\Documents\GitHub\orbital-alarm\mixkit-facility-alarm-sound-999.wav"></audio>
   <script src="script.js"></script>
 </body>
 </html>
