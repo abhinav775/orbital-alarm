@@ -11,27 +11,23 @@
 ### Team Members
 - Team Lead: Abhinavgopal M.B - SSET
 ### Project Description
-[2-3 lines about what your project does]
+The Orbital Alarm Clock is a fun, cosmic-themed digital alarm clock where the time is represented by the position of the Earth orbiting around the Sun in 2D. You set the alarm by aligning the Earth’s position, not just by typing numbers!.We can only 
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+People are bored with traditional alarm clocks that use numbers and sounds. What if… setting an alarm was as fun as rotating the Earth around the Sun?
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+A completely unnecessary orbital simulation that lets you set your alarm by rotating the Earth. Because clicking buttons is for peasants. Welcome to the future of waking up — where planetary physics meets procrastination.
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+-Languages used:HTML,CSS,JAVASCRIPT
+- Frameworks used:NONE
+- Libraries used:NONE
+- Tools used:VS CODE, Browser for testing
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
-
+For Hardware:It is software based project no hardwares are used
 ### Implementation
 For Software:
 # Installation
