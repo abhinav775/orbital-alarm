@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Orbit Alarm</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solar Alarm Clock</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="space">
+  <div id="sky">
     <div class="sun"></div>
-    <div class="orbit">
-      <div class="earth" id="earth"></div>
+    <div class="earth-orbit">
+      <div class="earth"></div>
     </div>
   </div>
-  <button id="setAlarmBtn">Set Alarm</button>
-  <audio id="alarmSound" src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg"></audio>
 
+  <div id="ui">
+    <h1>Set Alarm by Rotating Earth</h1>
+    <p>Drag the Earth around the Sun to set time. Then click <strong>Set Alarm</strong>.</p>
+    <p>Alarm Time: <span id="alarm-time">Not Set</span></p>
+    <button id="set-alarm">Set Alarm</button>
+  </div>
+
+  <audio id="alarm-sound" src="alarm.mp3" preload="auto"></audio>
+  
   <script src="script.js"></script>
 </body>
 </html>
