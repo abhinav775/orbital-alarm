@@ -34,7 +34,7 @@ For Software:git clone https://github.com/abhinav775/orbital-alarm
 cd orbital-alarm
 
 # Run
-open orbital alarm.html
+open index.html
 
 ### Project Documentation
 For Software:
