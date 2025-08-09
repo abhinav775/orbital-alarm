@@ -107,7 +107,7 @@ setInterval(() => {
 }, 1000);
 
 function askMathUntilWrong() {
-  // Create overlay elements dynamically
+  // Create overlay dynamically
   const overlay = document.createElement('div');
   overlay.style.position = 'fixed';
   overlay.style.top = 0;
@@ -127,6 +127,7 @@ function askMathUntilWrong() {
   questionBox.style.padding = '20px';
   questionBox.style.borderRadius = '10px';
   questionBox.style.textAlign = 'center';
+  questionBox.style.width = '300px';
 
   const questionText = document.createElement('div');
   questionText.style.fontSize = '1.5em';
@@ -134,11 +135,13 @@ function askMathUntilWrong() {
 
   const input = document.createElement('input');
   input.type = 'number';
+  input.step = '0.01';
   input.style.padding = '10px';
   input.style.fontSize = '1.2em';
   input.style.borderRadius = '5px';
   input.style.border = 'none';
   input.style.marginBottom = '10px';
+  input.style.width = '100%';
 
   const submitBtn = document.createElement('button');
   submitBtn.textContent = 'Submit';
@@ -149,6 +152,7 @@ function askMathUntilWrong() {
   submitBtn.style.background = '#0af';
   submitBtn.style.color = 'white';
   submitBtn.style.cursor = 'pointer';
+  submitBtn.style.marginTop = '10px';
 
   questionBox.appendChild(questionText);
   questionBox.appendChild(input);
@@ -156,29 +160,42 @@ function askMathUntilWrong() {
   overlay.appendChild(questionBox);
   document.body.appendChild(overlay);
 
-  function generateQuestion() {
-    const a = Math.floor(Math.random() * 10) + 1;
-    const b = Math.floor(Math.random() * 10) + 1;
-    const op = Math.random() < 0.5 ? '+' : '-';
-    const correct = op === '+' ? a + b : a - b;
-    return { question: `${a} ${op} ${b}`, answer: correct };
+  function generateTrigQuestion() {
+    const funcs = ['sin', 'cos', 'tan'];
+    const func = funcs[Math.floor(Math.random() * funcs.length)];
+
+    // Pick a random angle (multiples of 15 to avoid crazy decimals)
+    const angles = [0, 15, 30, 45, 60, 75, 90];
+    const angle = angles[Math.floor(Math.random() * angles.length)];
+
+    let radians = angle * (Math.PI / 180);
+    let result;
+    if (func === 'sin') result = Math.sin(radians);
+    if (func === 'cos') result = Math.cos(radians);
+    if (func === 'tan') result = Math.tan(radians);
+
+    // Round to 2 decimals
+    result = Math.round(result * 100) / 100;
+
+    return { question: `${func}(${angle}°)`, answer: result };
   }
 
-  let { question, answer } = generateQuestion();
+  let { question, answer } = generateTrigQuestion();
   questionText.textContent = `🧠 Solve: ${question}`;
   input.value = '';
 
   submitBtn.onclick = () => {
-    const userInput = parseInt(input.value);
+    const userInput = parseFloat(input.value);
+    if (isNaN(userInput)) return; // Ignore empty submissions
+
     if (userInput !== answer) {
       alarmSound.pause();
       alarmSound.currentTime = 0;
       document.body.removeChild(overlay);
       alert("🚨 Wrong answer. Alarm stopped.");
     } else {
-      // Refresh question
       alert("✅ Correct! Try again.");
-      ({ question, answer } = generateQuestion());
+      ({ question, answer } = generateTrigQuestion());
       questionText.textContent = `🧠 Solve: ${question}`;
       input.value = '';
     }
