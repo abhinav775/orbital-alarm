@@ -5,13 +5,13 @@
 
 
 ## Basic Details
-### Team Name: ABHINAVGOPAL
+### Team Name: Fight club
 
 
 ### Team Members
 - Team Lead: Abhinavgopal M.B - SSET
 ### Project Description
-The Orbital Alarm Clock is a fun, cosmic-themed digital alarm clock where the time is represented by the position of the Earth orbiting around the Sun in 2D. You set the alarm by aligning the Earth’s position, not just by typing numbers!.We can only 
+The Orbital Alarm Clock is a fun, cosmic-themed digital alarm clock where the time is represented by the position of the Earth orbiting around the Sun in 2D. You set the alarm by aligning the Earth’s position, not just by typing numbers!.We can only turn it off by solving a math equation with wrong answer
 
 ### The Problem (that doesn't exist)
 People are bored with traditional alarm clocks that use numbers and sounds. What if… setting an alarm was as fun as rotating the Earth around the Sun?
